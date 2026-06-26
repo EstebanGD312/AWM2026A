@@ -1,28 +1,18 @@
 import { useState, useEffect } from "react";
 import { api } from "../utils/api";
 
-
+const token = localStorage.getItem('token')
 export const useEstudiante = () => {
-    const token = localStorage.getItem('token')
+    
     const [estudiantes, setEstudiantes] = useState([]);
-    useEffect(() => {
-
-        const handleStorageChange = () => {
-            setToken(localStorage.getItem('token'));
-        };
-
-        window.addEventListener('storage', handleStorageChange);
-        return () => window.removeEventListener('storage', handleStorageChange);
-
-        if (token) {
-            api.get("/estudiantes", { headers: { Authorization: `Bearer ${token}` } })
-                .then((res) => {
-                    setEstudiantes(res.data)
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
-        }
+     useEffect(() => {
+        api.get("/estudiantes", {headers: {Authorization: `Bearer ${token}`}})
+            .then((res) => {
+                setEstudiantes(res.data)
+            })
+            .catch((err) => {
+                console.log(err);
+            })
     }, [token])
 
     const agregarEstudiante = (nuevoEstudiante) => {

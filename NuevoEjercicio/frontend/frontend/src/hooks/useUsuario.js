@@ -3,19 +3,30 @@ import { api } from "../utils/api"
 
 
 export const useUsuario = () => {
-    const token = localStorage.getItem('token')
-    const [usuarios, setUsuarios] = useState([]);
+    const [token, setToken] = useState(localStorage.getItem('token'));
+
+    const [usuarios, setUsuarios] = useState([])
+     useEffect(() => {
+        const handleStorageChange = () => {
+            const nuevoToken = localStorage.getItem('token');
+            setToken(nuevoToken);
+        };
+
+        window.addEventListener('storage', handleStorageChange);
+        return () => window.removeEventListener('storage', handleStorageChange);
+    }, []);
+
     useEffect(() => {
         if(token){
-        api.get("/Usuarios", { headers: { Authorization: `Bearer ${token}` } })
-            .then((res) => {
-                setUsuarios(res.data)
-            })
-            .catch((err) => {
-                console.log(err);
-            })
+            api.get("/Usuarios", { headers: { Authorization: `Bearer ${token}` } })
+                .then((res) => {
+                    setUsuarios(res.data)
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
         }
-    }, [token])
+    }, [token]);
 
     const agregarUsuario = (nuevoUsuario) => {
 
@@ -57,13 +68,17 @@ export const useUsuario = () => {
     const loginUsuario = (email, password) => {
         return api.post("/usuarios/login", { email, password })
             .then((res) => {
-                console.log("Login Correcto");
+                
                 const tokenNuevo = res.data.token
                 localStorage.setItem('token', tokenNuevo)
+                
                 return true;
 
             })
-            .catch(() => { console.log("Login Fallido"); return false; })
+            .catch(() => { 
+                
+                return false; 
+                console.log("Login Fallido"); return false; })
     }
     return {usuarios, agregarUsuario, eliminarUsuario, editarUsuario, loginUsuario}
 }

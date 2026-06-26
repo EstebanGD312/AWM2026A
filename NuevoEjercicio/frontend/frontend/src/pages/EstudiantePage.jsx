@@ -6,6 +6,9 @@ const EstudiantePage = (props) => {
     const {estudiantes} = props;
     const navegar = useNavigate();
 
+    
+
+
     return (
         <div>
             <button onClick={() => navegar("/estudiantes/nuevo")}>+</button>

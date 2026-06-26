@@ -6,11 +6,15 @@ import { useNavigate } from "react-router-dom";
 const LoginPage = () => {
     const { loginUsuario, errorLogin } = useUsuario();
     const navegar = useNavigate();
+    
 
     const manejarLogin = (email, password) => {
+        
         loginUsuario(email, password)
             .then((exito) => {
+                
                 if (exito) {
+                    
                     navegar("/estudiantes")
                 }
             })
