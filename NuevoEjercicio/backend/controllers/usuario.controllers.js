@@ -47,8 +47,8 @@ module.exports.updateUsuario = async (req, res) => {
     if (emailEncontrado) {
         res.status(400).json({ mensaje: "Email ya usado" })
     } else {
-        Usuario.findOneAndUpdate({ _id: id }, { nombre, email })
-        .then(usuarioNuevo => res.json({nombre, email}))
+        Usuario.findOneAndUpdate({ _id: id }, { nombre, email }, { new: true })
+        .then(usuarioNuevo => res.json(usuarioNuevo))
         .catch(err => res.json(err))
     }
 }
