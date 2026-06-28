@@ -13,7 +13,8 @@ module.exports.verificarToken = async (req, res, next) => {
             //console.log('Token extraido: ', token);
 
             const decoded = jwt.verify(token, contraseña);
-            req.estudiante = await Usuario.findOne({id: decoded.id}).select('-password');
+            const usuario = await Usuario.findById(decoded.id).select('-password');
+            req.usuario = usuario
             next();
         } catch(err){
             res.status(401).json({mensaje: 'Token no valido'})
@@ -23,3 +24,4 @@ module.exports.verificarToken = async (req, res, next) => {
     
     }
 }
+

@@ -18,7 +18,7 @@ module.exports.getUsuarioById = (req, res) => {
         .catch(err => res.json(err))
 }
 module.exports.createUsuario = async (req, res) => {
-    const { nombre, password, email } = req.body;
+    const { nombre, password, email, rol} = req.body;
 
     if (!nombre || !password || !email) {
         res.status(400).json({ mensaje: "Campos vacios, son mandatorios!" })
@@ -30,7 +30,7 @@ module.exports.createUsuario = async (req, res) => {
         } else {
             const salt = await bcrypt.genSalt(10);
             const hashedPass = await bcrypt.hash(password, salt)
-            Usuario.create({ nombre, email, password: hashedPass })
+            Usuario.create({ nombre, email, password: hashedPass , rol})
                 .then(usuario => res.json(usuario))
                 .catch(err => res.json(err))
         }
@@ -65,12 +65,12 @@ module.exports.loginUsuario = async (req, res) =>{
     const { email, password } = req.body;
     const emailEncontrado = await Usuario.findOne({email})
     if (emailEncontrado && (await bcrypt.compare(password, emailEncontrado.password))){
-        res.json({mensaja: "Login correcto", email: emailEncontrado.email, token: generarToken(emailEncontrado.id)})
+        res.json({mensaja: "Login correcto", email: emailEncontrado.email, rol:emailEncontrado.rol, token: generarToken(emailEncontrado.id, emailEncontrado.rol)})
     }else{
         res.status(400).json({mensaje: 'No valido, intente otra vez'})
     }
 }
 
-const generarToken = (id) => {
-    return jwt.sign({id}, contraseña, {expiresIn: '1d'})
+const generarToken = (id, rol) => {
+    return jwt.sign({id, rol}, contraseña, {expiresIn: '1d'})
 }
