@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { api } from "../utils/api";
 
-const token = localStorage.getItem('token')
+
 export const useEstudiante = () => {
-    
+    const [token, setToken] = useState(localStorage.getItem('token'));
     const [estudiantes, setEstudiantes] = useState([]);
      useEffect(() => {
         api.get("/estudiantes", {headers: {Authorization: `Bearer ${token}`}})

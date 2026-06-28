@@ -14,7 +14,7 @@ export const useUsuario = () => {
 
         window.addEventListener('storage', handleStorageChange);
         return () => window.removeEventListener('storage', handleStorageChange);
-    }, []);
+    }, [token]);
 
     useEffect(() => {
         if(token){

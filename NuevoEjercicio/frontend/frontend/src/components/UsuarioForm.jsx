@@ -103,24 +103,26 @@ const UsuarioForm = (props) => {
                     />
                     <div style={{ color: "red" }}>{errorEmail}</div>
                 </div>
-                <div>
-                    <label htmlFor="ad_password">Password: </label>
-                    <input
-                        type="password"
-                        id="ad_password"
-                        name="password"
-                        value={nuevoUsuario.password || ""}
-                        onChange={(e) =>
-                            setNuevoUsuario(prev => ({
-                                ...prev,
-                                password: e.target.value
-                            }))
-                        }
-                        required={!esEdicion}
-                        disabled={esEdicion}
-                    />
-                    <div style={{ color: "red" }}>{errorPassword}</div>
-                </div>
+                {
+                    !esEdicion &&
+                    <div>
+                        <label htmlFor="ad_password">Password: </label>
+                        <input
+                            type="password"
+                            id="ad_password"
+                            name="password"
+                            value={nuevoUsuario.password || ""}
+                            onChange={(e) =>
+                                setNuevoUsuario(prev => ({
+                                    ...prev,
+                                    password: e.target.value
+                                }))
+                            }
+                            disabled={esEdicion}
+                        />
+                        <div style={{ color: "red" }}>{errorPassword}</div>
+                    </div>
+                }
                 <div>
                     <input
                         type="submit"

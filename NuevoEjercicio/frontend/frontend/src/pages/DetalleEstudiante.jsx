@@ -8,7 +8,7 @@ const DetalleEstudiante = (props) => {
     const { id } = useParams();
     const navegar = useNavigate();
 
-    const token = localStorage.getItem('token')
+    const [token, setToken] = useState(localStorage.getItem('token'));
 
     const {onEliminar} = props;
 
@@ -24,7 +24,15 @@ const DetalleEstudiante = (props) => {
             <h4>Edad: {estudiante.edad}</h4>
             {estudiante.url?<a href={estudiante.url}>Home Page</a>:<span>Home page no disponible</span>}
             <div>
-                <button onClick={() => navegar(`/estudiantes/editar/${id}`)}>Editar</button>
+                <button onClick={() => {
+                    if(!token){
+                        navegar('/estudiantes')
+                        console.log('No permitido')
+                    }else{
+                        
+                        navegar(`/estudiantes/editar/${id}`)
+                    }
+                }}>Editar</button>
                 <button onClick={() => {onEliminar(estudiante.id); navegar("/estudiantes")}} >Eliminar</button>
             </div>
             

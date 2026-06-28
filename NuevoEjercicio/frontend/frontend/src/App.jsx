@@ -16,7 +16,6 @@ import LoginForm from "./components/LoginForm";
 
 
 const App = () => {
-
   const { estudiantes, agregarEstudiante, eliminarEstudiante, editarEstudiante} = useEstudiante();
   const { usuarios, agregarUsuario, eliminarUsuario, editarUsuario, loginUsuario} = useUsuario();
 
